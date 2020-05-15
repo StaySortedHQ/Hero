@@ -123,19 +123,19 @@ public extension UIViewController {
   }
 
   @available(*, deprecated, message: "Use hero.modalAnimationType instead")
-  public var heroModalAnimationType: HeroDefaultAnimationType {
+  var heroModalAnimationType: HeroDefaultAnimationType {
     get { return hero.modalAnimationType }
     set { hero.modalAnimationType = newValue }
   }
 
   @available(*, deprecated, message: "Use hero.modalAnimationTypeString instead")
-  @IBInspectable public var heroModalAnimationTypeString: String? {
+  @IBInspectable var heroModalAnimationTypeString: String? {
     get { return hero.modalAnimationTypeString }
     set { hero.modalAnimationTypeString = newValue }
   }
 
   @available(*, deprecated, message: "Use hero.isEnabled instead")
-  @IBInspectable public var isHeroEnabled: Bool {
+  @IBInspectable var isHeroEnabled: Bool {
     get { return hero.isEnabled }
     set { hero.isEnabled = newValue }
   }
@@ -144,12 +144,12 @@ public extension UIViewController {
 public extension HeroExtension where Base: UINavigationController {
 
   /// default hero animation type for push and pop within the navigation controller
-  public var navigationAnimationType: HeroDefaultAnimationType {
+  var navigationAnimationType: HeroDefaultAnimationType {
     get { return config.navigationAnimation }
     set { config.navigationAnimation = newValue }
   }
 
-  public var navigationAnimationTypeString: String? {
+  var navigationAnimationTypeString: String? {
     get { return config.navigationAnimation.label }
     set { config.navigationAnimation = newValue?.parseOne() ?? .auto }
   }
@@ -173,12 +173,12 @@ extension UINavigationController {
 public extension HeroExtension where Base: UITabBarController {
 
   /// default hero animation type for switching tabs within the tab bar controller
-  public var tabBarAnimationType: HeroDefaultAnimationType {
+  var tabBarAnimationType: HeroDefaultAnimationType {
     get { return config.tabBarAnimation }
     set { config.tabBarAnimation = newValue }
   }
 
-  public var tabBarAnimationTypeString: String? {
+  var tabBarAnimationTypeString: String? {
     get { return config.tabBarAnimation.label }
     set { config.tabBarAnimation = newValue?.parseOne() ?? .auto }
   }
@@ -205,7 +205,7 @@ public extension HeroExtension where Base: UIViewController {
    Dismiss the current view controller with animation. Will perform a navigationController.popViewController
    if the current view controller is contained inside a navigationController
    */
-  public func dismissViewController() {
+  func dismissViewController() {
     if let navigationController = base.navigationController, navigationController.viewControllers.first != base {
       navigationController.popViewController(animated: true)
     } else {
@@ -216,37 +216,37 @@ public extension HeroExtension where Base: UIViewController {
   /**
    Unwind to the root view controller using Hero
    */
-  public func unwindToRootViewController() {
+  func unwindToRootViewController() {
     unwindToViewController { $0.presentingViewController == nil }
   }
 
   /**
    Unwind to a specific view controller using Hero
    */
-  public func unwindToViewController(_ toViewController: UIViewController) {
+  func unwindToViewController(_ toViewController: UIViewController) {
     unwindToViewController { $0 == toViewController }
   }
 
-  public func unwindToViewController(withSelector: Selector) {
+  func unwindToViewController(withSelector: Selector) {
     unwindToViewController { $0.responds(to: withSelector) }
   }
 
   /**
    Unwind to a view controller with given class using Hero
    */
-  public func unwindToViewController(withClass: AnyClass) {
+  func unwindToViewController(withClass: AnyClass) {
     unwindToViewController { $0.isKind(of: withClass) }
   }
 
   /**
    Unwind to a view controller that the matchBlock returns true on.
    */
-  public func unwindToViewController(withMatchBlock: (UIViewController) -> Bool) {
+  func unwindToViewController(withMatchBlock: (UIViewController) -> Bool) {
     var target: UIViewController? = nil
     var current: UIViewController? = base
 
     while target == nil && current != nil {
-      if let childViewControllers = (current as? UINavigationController)?.childViewControllers ?? current!.navigationController?.childViewControllers {
+      if let childViewControllers = (current as? UINavigationController)?.children ?? current!.navigationController?.children {
         for vc in childViewControllers.reversed() {
           if vc != base, withMatchBlock(vc) {
             target = vc
@@ -295,7 +295,7 @@ public extension HeroExtension where Base: UIViewController {
   /**
    Replace the current view controller with another VC on the navigation/modal stack.
    */
-  public func replaceViewController(with next: UIViewController) {
+  func replaceViewController(with next: UIViewController) {
     let hero = next.transitioningDelegate as? HeroTransition ?? Hero.shared
 
     if hero.isTransitioning {
@@ -303,7 +303,7 @@ public extension HeroExtension where Base: UIViewController {
       return
     }
     if let navigationController = base.navigationController {
-      var vcs = navigationController.childViewControllers
+      var vcs = navigationController.children
       if !vcs.isEmpty {
         vcs.removeLast()
         vcs.append(next)
