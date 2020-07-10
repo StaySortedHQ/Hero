@@ -54,19 +54,19 @@ public extension HeroExtension where Base: UIViewController {
   }
 
   /// default hero animation type for presenting & dismissing modally
-  public var modalAnimationType: HeroDefaultAnimationType {
+  var modalAnimationType: HeroDefaultAnimationType {
     get { return config.modalAnimation }
     set { config.modalAnimation = newValue }
   }
 
   // TODO: can be moved to internal later (will still be accessible via IB)
-  public var modalAnimationTypeString: String? {
+  var modalAnimationTypeString: String? {
     get { return config.modalAnimation.label }
     set { config.modalAnimation = newValue?.parseOne() ?? .auto }
   }
 
   // TODO: can be moved to internal later (will still be accessible via IB)
-  public var isEnabled: Bool {
+  var isEnabled: Bool {
     get {
       return base.transitioningDelegate is HeroTransition
     }
