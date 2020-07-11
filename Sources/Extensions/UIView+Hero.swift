@@ -137,7 +137,7 @@ public extension UIView {
   }
 
   @available(*, deprecated, message: "Use hero.modifiers instead")
-  public var heroModifiers: [HeroModifier]? {
+  var heroModifiers: [HeroModifier]? {
     get { return hero.modifiers }
     set { hero.modifiers = newValue }
   }
